@@ -1,0 +1,23 @@
+# 忽略 data/caparena_auto/ 和 data/eval/ 目录下的所有内容
+data/caparena_auto/*
+data/eval/*
+
+# 允许 data 目录本身存在，即使它是空的
+!data/
+
+# 忽略 .DS_Store 文件
+.DS_Store
+
+# 忽略 Python 相关缓存文件
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 忽略虚拟环境（如果有）
+venv/
+.env
+
+# 忽略临时脚本
+temp_script.py
+metrics_vis.py
