@@ -16,7 +16,7 @@ Release Plans:
 ***
 ###  Automated Detailed Captioning Benchmark *CapArena-Auto*
 
-*CapArena-Auto* is an arena-style automated evaluation benchmark for detailed captioning. It includes 600 evaluation images and assesses model performance through pairwise battles with baseline models. The final score is calculated by GPT4o-as-a-Judge.
+*CapArena-Auto* is an arena-style automated evaluation benchmark for detailed captioning. It includes 600 evaluation images and assesses model performance through pairwise battles with three baseline models. The final score is calculated by GPT4o-as-a-Judge.
 
 The current leaderboard contains 22 models evaluated by authors: [🤗 CapArena-Auto Leaderboard](https://huggingface.co/spaces/yan111222/CapArena_Auto)
 
