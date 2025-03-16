@@ -132,7 +132,8 @@ python caparena_metrics.py --eval_dir data/eval/caparena_annots_eval_gpt_ref.jso
 ```
 
 ### ⚖️ VLM-as-a-Judge
-To reproduce our VLM-as-a-Judge results, first download the total [5100 images](https://box.nju.edu.cn/f/9d2b9ded47d54999926c/) from DOCCI.
+The above provides the VLM-as-a-Judge results that we have generated.
+If you want to reproduce our VLM-as-a-Judge process, first download the total [5100 images](https://box.nju.edu.cn/f/9d2b9ded47d54999926c/) from DOCCI.
 Then you can conduct GPT4o-as-a-Judge by:
 ```
 python vlm_as_a_judge.py --caption_eval_cand_dir data/eval/caparena_annots_eval.json --eval_save_path data/eval/caparena_annots_eval_gpt_ref.json --imgs_dir xxx/images
