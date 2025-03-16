@@ -78,7 +78,11 @@ Then, you should generate detailed captions for these images use your own model.
 
 #### Step3: Evaluating with GPT4o-as-a-Judge
 
-First config your openai api key: `export OPENAI_API_KEY="sk-xxxx"`
+First config your openai api key: 
+
+```
+export OPENAI_API_KEY="sk-xxxx"
+```
 
 Then:
 ```
