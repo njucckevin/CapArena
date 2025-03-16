@@ -23,7 +23,7 @@ The current leaderboard contains 22 models evaluated by authors: [🤗 CapArena-
 ### 📝 Evaluate your own model on *CapArena-Auto*
 
 #### Step1：View the current leaderboard
-Download the [results](https://box.nju.edu.cn/f/707c01ccdb724d2f925f/) of the models we have evaluated and put them under data/caparena_auto. It should looks like:
+Download the [results](https://box.nju.edu.cn/f/707c01ccdb724d2f925f/) of the models we have evaluated and put them under `data/caparena_auto`. It should looks like:
 
 ```
 data/
@@ -93,7 +93,7 @@ python caparena_auto_eval.py --test_model Model-Test --result_path xxx/test_mode
 - result_path: the formatted result file generated in step 2.
 - imgs_dir: the 600 images directory.
 
-This script generate the pair-wise judgment file `\data\caparean_auto\Model-Test.json`.
+This script generate the pair-wise judgment file `data/caparean_auto/Model-Test.json`.
 
 #### Step4: View your model's score in the *CapArena-Auto* leaderboard
 
@@ -102,5 +102,52 @@ python caparena_auto_scores.py --caparena_auto_dir data/caparena_auto --new_mode
 ```
 
 > Note: If you would like to submit your results to the [online leaderboard](https://huggingface.co/spaces/yan111222/CapArena_Auto), please raise an issue or contact us!
->
-> 
+
+***
+### Reproduce the results from the paper
+
+### 🛠️ Prepare the human annotation results of *CapArena*
+
+Download the [annotation result](https://box.nju.edu.cn/f/0fd0a0d3dce243ab8c12/) of *CapArena* and put them under `data/eval`. It should looks like:
+
+```
+data/
+└── eval/
+    ├── caparena_annots_eval.json
+    ├── caparena_annots_eval_gpt_ref.json
+    ├── caparena_annots_eval_gpt.json
+    └── ...
+```
+
+`caparena_annots_eval.json` is the human annotation results of *CapArena*, which contains 6523 pair-wise battle/judgment given by our human annotators.
+
+Other files are the results of the annotation of these 6523 pairs by captioning metrics (e.g., GPT-4o, GPT-4o with ref, LLaVA-OneVision). Each item in these files include a `judge` key to represent the judgment given by the metric.
+
+### 🎯 Calculate the caption-level agreement and model-level agreement
+
+Calculate caption-level agreement and model-level agreement based on metrics annotation results:
+
+```
+python caparena_metrics.py --eval_dir data/eval/caparena_annots_eval_gpt_ref.json
+```
+
+### ⚖️ VLM-as-a-Judge
+To reproduce our VLM-as-a-Judge results, first download the total [5100 images](https://box.nju.edu.cn/f/9d2b9ded47d54999926c/) from DOCCI.
+Then you can conduct GPT4o-as-a-Judge by:
+```
+python vlm_as_a_judge.py --caption_eval_cand_dir data/eval/caparena_annots_eval.json --eval_save_path data/eval/caparena_annots_eval_gpt_ref.json --imgs_dir xxx/images
+```
+
+*** 
+### Acknowledge
+
+Thanks to [DOCCI](https://google.github.io/docci/) for their high-quality human annotation and wonderful open-sourced work.
+
+Thanks to all the annotators who participated in compiling our CapArena dataset.
+
+***
+### Citation
+If you find this work helpful, please consider to star 🌟 this repo and cite our paper.
+```
+TBD
+```
