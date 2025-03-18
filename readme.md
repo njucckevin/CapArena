@@ -80,6 +80,8 @@ Then, you should generate detailed captions for these images use your own model.
 
 #### Step3: Evaluating with GPT4o-as-a-Judge
 
+> Note: About $4 per evaluation
+
 First config your openai api key: 
 
 ```
