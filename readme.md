@@ -1,11 +1,11 @@
 # CapArena: Benchmarking and Analyzing Detailed Image Captioning in the LLM Era
 
-[![arXiv](https://img.shields.io/badge/arXiv-2503.xxxxx-b31b1b.svg)](https://arxiv.org/abs/2503.xxxxx) 
+[![arXiv](https://img.shields.io/badge/arXiv-2503.12329-b31b1b.svg)](https://arxiv.org/abs/2503.12329) 
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity) 
 [![PR's Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
 [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 
-The data, code, and resource for the paper: [CapArena: Benchmarking and Analyzing Detailed Image Captioning in the LLM Era](https://arxiv.org/abs/2503.xxxxx)
+The data, code, and resource for the paper: [CapArena: Benchmarking and Analyzing Detailed Image Captioning in the LLM Era](https://arxiv.org/abs/2503.12329)
 
 Release Plans:
 
@@ -149,6 +149,14 @@ Thanks to all the annotators who participated in compiling our CapArena dataset.
 ***
 ### Citation
 If you find this work helpful, please consider to star 🌟 this repo and cite our paper.
-```
-TBD
-```
+<!-- ```
+@misc{cheng2025caparenabenchmarkinganalyzingdetailed,
+      title={CapArena: Benchmarking and Analyzing Detailed Image Captioning in the LLM Era}, 
+      author={Kanzhi Cheng and Wenpo Song and Jiaxin Fan and Zheng Ma and Qiushi Sun and Fangzhi Xu and Chenyang Yan and Nuo Chen and Jianbing Zhang and Jiajun Chen},
+      year={2025},
+      eprint={2503.12329},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2503.12329}, 
+}
+``` -->
