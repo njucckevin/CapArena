@@ -152,14 +152,11 @@ Thanks to all the annotators who participated in compiling our CapArena dataset.
 ***
 ### Citation
 If you find this work helpful, please consider to star 🌟 this repo and cite our paper.
-<!-- ```
-@misc{cheng2025caparenabenchmarkinganalyzingdetailed,
-      title={CapArena: Benchmarking and Analyzing Detailed Image Captioning in the LLM Era}, 
-      author={Kanzhi Cheng and Wenpo Song and Jiaxin Fan and Zheng Ma and Qiushi Sun and Fangzhi Xu and Chenyang Yan and Nuo Chen and Jianbing Zhang and Jiajun Chen},
-      year={2025},
-      eprint={2503.12329},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2503.12329}, 
+```
+@article{cheng2025caparena,
+  title={CapArena: Benchmarking and Analyzing Detailed Image Captioning in the LLM Era},
+  author={Cheng, Kanzhi and Song, Wenpo and Fan, Jiaxin and Ma, Zheng and Sun, Qiushi and Xu, Fangzhi and Yan, Chenyang and Chen, Nuo and Zhang, Jianbing and Chen, Jiajun},
+  journal={arXiv preprint arXiv:2503.12329},
+  year={2025}
 }
-``` -->
+```
