@@ -6,7 +6,20 @@
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity) 
 [![PR's Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
 
-The data, code, and resource for the paper: [CapArena: Benchmarking and Analyzing Detailed Image Captioning in the LLM Era](https://arxiv.org/abs/2503.12329)
+This repository contains the data, code, and resources for the paper:  
+**"CapArena: Benchmarking and Analyzing Detailed Image Captioning in the LLM Era"**  
+[(arXiv link)](https://arxiv.org/abs/2503.12329)
+
+## Contents
+- [Automated Evaluation Benchmark](#-caparena-auto-benchmark)
+- [Evaluation Steps](#-evaluation-steps)
+  - [Evaluate Your Model](#evaluate-your-own-model-on-caparena-auto)
+  - [Reproduce Paper Results](#reproduce-paper-results)
+- [VLM-as-a-judge](#️-vlm-as-a-judge)
+- [Acknowledgements](#acknowledge)
+- [Citation](#citation)
+
+---
 
 Release Plans:
 
@@ -15,17 +28,44 @@ Release Plans:
 - [ ] Other resources
 
 ***
-###  Automated Detailed Captioning Benchmark *CapArena-Auto*
+## 🏆 CapArena-Auto Benchmark
 
-*CapArena-Auto* is an arena-style automated evaluation benchmark for detailed captioning. It includes 600 evaluation images and assesses model performance through pairwise battles with three baseline models. The final score is calculated by GPT4o-as-a-Judge.
+*CapArena-Auto* is an arena-style automated evaluation benchmark for detailed image captioning. It features:
+- 600 evaluation images
+- Pairwise battles against three baseline models
+- GPT-4o-as-a-Judge scoring system
 
-The current leaderboard contains 22 models evaluated by authors: [🤗 CapArena-Auto Leaderboard](https://huggingface.co/spaces/yan111222/CapArena_Auto)
+**Current Leaderboard**: [🤗 CapArena-Auto Leaderboard](https://huggingface.co/spaces/yan111222/CapArena_Auto) (22 models evaluated)
 
-### 📝 Evaluate your own model on *CapArena-Auto*
+---
 
-#### Step1：View the current leaderboard
-Download the [results](https://box.nju.edu.cn/f/707c01ccdb724d2f925f/) of the models we have evaluated and put them under `data/caparena_auto`. It should looks like:
+## 🔍 Evaluation Steps
 
+### Evaluate Your Own Model on CapArena-Auto
+
+#### 📥 Step 1: Download Required Files
+1. Download the [evaluation images](https://box.nju.edu.cn/f/a79c42c9c10e4acb83e7/) (600 images)
+  - Contains all 600 images used for CapArena-Auto evaluation
+  - These are the test images your model will need to generate caption
+  - File structure: `all_images/` folder with `test_XXXXX.jpg` files
+
+2. Download the [result template](https://box.nju.edu.cn/f/43eb761488734c638824/)
+  - Example JSON file showing the required output format
+   - Ensures compatibility with our evaluation scripts
+3. Download existing [model results & reference](https://box.nju.edu.cn/f/707c01ccdb724d2f925f/)
+- Contains two critical components:
+     - `caparena_auto_600.json`:  
+       - Human-annotated reference captions for all 600 images
+       - Structure: `{"image_id": ...,"captions": {"human": ..., "gpt": "...", "cog": "...", "cpm": "..."}, "ref_model": ...}`
+     - Leaderboard models' results (e.g. `GPT-4o-0806.json`, `Claude-3.5.json` etc.)
+        - Pre-computed results from reference models (used for pairwise evaluation)
+   - Used to:
+     - Build pairwise comparisons during evaluation
+     - Calculate relative performance against baseline models
+     - Generate the leaderboard rankings
+
+#### 🗂️ Step 2: Prepare Your Environment
+Create the following directory structure:
 ```
 data/
 └── caparena_auto/
@@ -35,7 +75,39 @@ data/
     └── ...
 ```
 
-Then, you can use `python caparena_auto_scores.py` to view the current leaderboard.
+#### 📊 Step 3: Generate Captions
+Generate detailed captions for all 600 images using your model. Format your results as:
+```json
+{
+    "test_01258.jpg": "The image features a cle… day with good weather.",
+    "test_04765.jpg": "The image shows a small,…on the brick structure.",
+    "test_02788.jpg": "The scene depicts a pair… and recycling efforts.",
+    "test_02765.jpg": "The photo captures a str…al beauty to the scene.",
+    ...
+}
+```
+
+#### ⚖️ Step 4: Run Evaluation (Cost: ~$4)
+1. Set your OpenAI API key:
+```bash
+export OPENAI_API_KEY="sk-xxxx"
+```
+2. Run evaluation:
+```bash
+python caparena_auto_eval.py \
+  --test_model YourModelName \
+  --result_path path/to/your_results.json \
+  --imgs_dir path/to/images
+```
+#### 🏅 Step 5: View Results
+```bash
+python caparena_auto_scores.py \
+  --caparena_auto_dir data/caparena_auto \
+  --new_model_name YourModelName
+```
+> Note: If you would like to submit your results to the [online leaderboard](https://huggingface.co/spaces/yan111222/CapArena_Auto), please raise an issue or contact us!
+
+To view the current leaderboard, download the [results](https://box.nju.edu.cn/f/707c01ccdb724d2f925f/) of the models we have evaluated and put them under `data/caparena_auto`. Then, you can use `python caparena_auto_scores.py` to view the current leaderboard.
 
 ```
 Model                          | Score_avg | Score_gpt  | Score_cog  | Score_cpm  | Length_Avg |
@@ -64,54 +136,13 @@ cambrian-34b                   | -75.00   | -93.00     | -76.00     | -56.00    
 LLaVA-1.5-7B                   | -94.00   | -99.50     | -92.00     | -90.50     | 74.38      |
 ```
 
-#### Step2: Generating captions for your own model
-Download the [600 images](https://box.nju.edu.cn/f/a79c42c9c10e4acb83e7/) for *CapArena-Auto* evaluation and a [result templete](https://box.nju.edu.cn/f/43eb761488734c638824/).
-
-Then, you should generate detailed captions for these images use your own model. The final result file is a `dict()` looks like:
-
-```
-{"test_01258.jpg": "The image features a cle… day with good weather.",
-"test_04765.jpg": "The image shows a small,…on the brick structure.",
-"test_02788.jpg": "The scene depicts a pair… and recycling efforts.",
-"test_02765.jpg": "The photo captures a str…al beauty to the scene.",
-...
-```
-
-#### Step3: Evaluating with GPT4o-as-a-Judge
-
-> Note: About $4 per evaluation
-
-First config your openai api key: 
-
-```
-export OPENAI_API_KEY="sk-xxxx"
-```
-
-Then:
-```
-python caparena_auto_eval.py --test_model Model-Test --result_path xxx/test_model_result.json --imgs_dir xxx/all_images
-```
-
-- test_model: a model name assigned by yourself.
-- result_path: the formatted result file generated in step 2.
-- imgs_dir: the 600 images directory.
-
-This script generate the pair-wise judgment file `data/caparean_auto/Model-Test.json`.
-
-#### Step4: View your model's score in the *CapArena-Auto* leaderboard
-
-```
-python caparena_auto_scores.py --caparena_auto_dir data/caparena_auto --new_model_name Model-Test
-```
-
-> Note: If you would like to submit your results to the [online leaderboard](https://huggingface.co/spaces/yan111222/CapArena_Auto), please raise an issue or contact us!
 
 ***
-### Reproduce the results from the paper
+### Reproduce Paper Results
 
-### 🛠️ Prepare the human annotation results of *CapArena*
+#### 📥 Step 1: Download Annotation Data
 
-Download the [annotation result](https://box.nju.edu.cn/f/0fd0a0d3dce243ab8c12/) of *CapArena* and put them under `data/eval`. It should looks like:
+Download the [annotation result](https://box.nju.edu.cn/f/0fd0a0d3dce243ab8c12/) of *CapArena* and put them under `data/eval`. 
 
 ```
 data/
@@ -126,21 +157,27 @@ data/
 
 Other files are the results of the annotation of these 6523 pairs by captioning metrics (e.g., GPT-4o, GPT-4o with ref, LLaVA-OneVision). Each item in these files include a `judge` key to represent the judgment given by the metric.
 
-### 🎯 Calculate the caption-level agreement and model-level agreement
+#### 🎯 Step 2: Calculate the caption-level agreement and model-level agreement
 
 Calculate caption-level agreement and model-level agreement based on metrics annotation results:
 
-```
-python caparena_metrics.py --eval_dir data/eval/caparena_annots_eval_gpt_ref.json
+```bash
+python caparena_metrics.py \
+    --eval_dir data/eval/caparena_annots_eval_gpt_ref.json
 ```
 
 ### ⚖️ VLM-as-a-Judge
 The above provides the VLM-as-a-Judge results that we have generated.
 If you want to reproduce our VLM-as-a-Judge process, first download the total [5100 images](https://box.nju.edu.cn/f/9d2b9ded47d54999926c/) from DOCCI.
-Then you can conduct GPT4o-as-a-Judge by:
+Then you can conduct GPT-4o-as-a-Judge by:
 ```
 python vlm_as_a_judge.py --caption_eval_cand_dir data/eval/caparena_annots_eval.json --eval_save_path data/eval/caparena_annots_eval_gpt_ref.json --imgs_dir xxx/images
 ```
+#### 📊 Calculating Additional Metrics with Human References
+
+If you need human-annotated references for calculating traditional metrics (e.g., BLEU, CIDEr, SPICE), you can obtain the DOCCI human descriptions from:
+
+[docci_descriptions](https://storage.googleapis.com/docci/data/docci_descriptions.jsonlines)
 
 *** 
 ### Acknowledge
@@ -152,14 +189,11 @@ Thanks to all the annotators who participated in compiling our CapArena dataset.
 ***
 ### Citation
 If you find this work helpful, please consider to star 🌟 this repo and cite our paper.
-<!-- ```
-@misc{cheng2025caparenabenchmarkinganalyzingdetailed,
-      title={CapArena: Benchmarking and Analyzing Detailed Image Captioning in the LLM Era}, 
-      author={Kanzhi Cheng and Wenpo Song and Jiaxin Fan and Zheng Ma and Qiushi Sun and Fangzhi Xu and Chenyang Yan and Nuo Chen and Jianbing Zhang and Jiajun Chen},
-      year={2025},
-      eprint={2503.12329},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2503.12329}, 
+```
+@article{cheng2025caparena,
+  title={CapArena: Benchmarking and Analyzing Detailed Image Captioning in the LLM Era},
+  author={Cheng, Kanzhi and Song, Wenpo and Fan, Jiaxin and Ma, Zheng and Sun, Qiushi and Xu, Fangzhi and Yan, Chenyang and Chen, Nuo and Zhang, Jianbing and Chen, Jiajun},
+  journal={arXiv preprint arXiv:2503.12329},
+  year={2025}
 }
-``` -->
+```
