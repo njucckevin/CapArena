@@ -6,26 +6,27 @@
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity) 
 [![PR's Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
 
-This repository contains the data, code, and resources for the paper:  
-**"CapArena: Benchmarking and Analyzing Detailed Image Captioning in the LLM Era"**  
-[(arXiv link)](https://arxiv.org/abs/2503.12329)
+This repository contains the data, code, and resources for the paper: **CapArena: Benchmarking and Analyzing Detailed Image Captioning in the LLM Era**
+[\[Arxiv Link\]](https://arxiv.org/abs/2503.12329)
+[\[Project Page\]](https://caparena.github.io/)
 
-## Contents
+News: This paper was accepted by ACL 2025 findings.
+
+Release Plans:
+
+- [x] Usage of *CapArena-Auto*
+- [x] Code and data to reproduce the results in the paper
+- [x] Other resources
+
+<!-- ## Contents
 - [Automated Evaluation Benchmark](#-caparena-auto-benchmark)
 - [Evaluation Steps](#-evaluation-steps)
   - [Evaluate Your Model](#evaluate-your-own-model-on-caparena-auto)
   - [Reproduce Paper Results](#reproduce-paper-results)
 - [VLM-as-a-judge](#️-vlm-as-a-judge)
 - [Acknowledgements](#acknowledge)
-- [Citation](#citation)
+- [Citation](#citation) -->
 
----
-
-Release Plans:
-
-- [x] Usage of *CapArena-Auto*
-- [x] Code and data to reproduce the results in the paper
-- [ ] Other resources
 
 ***
 ## 🏆 CapArena-Auto Benchmark
@@ -34,6 +35,7 @@ Release Plans:
 - 600 evaluation images
 - Pairwise battles against three baseline models
 - GPT-4o-as-a-Judge scoring system
+- high correlation with human rankings
 
 **Current Leaderboard**: [🤗 CapArena-Auto Leaderboard](https://huggingface.co/spaces/yan111222/CapArena_Auto) (22 models evaluated)
 
@@ -52,17 +54,17 @@ Release Plans:
 2. Download the [result template](https://box.nju.edu.cn/f/43eb761488734c638824/)
   - Example JSON file showing the required output format
    - Ensures compatibility with our evaluation scripts
-3. Download existing [model results & reference](https://box.nju.edu.cn/f/707c01ccdb724d2f925f/)
+3. Download [human reference captions & existing model results](https://box.nju.edu.cn/f/707c01ccdb724d2f925f/)
 - Contains two critical components:
      - `caparena_auto_600.json`:  
        - Human-annotated reference captions for all 600 images
        - Structure: `{"image_id": ...,"captions": {"human": ..., "gpt": "...", "cog": "...", "cpm": "..."}, "ref_model": ...}`
      - Leaderboard models' results (e.g. `GPT-4o-0806.json`, `Claude-3.5.json` etc.)
-        - Pre-computed results from reference models (used for pairwise evaluation)
-   - Used to:
+        - Pre-computed pair-wise battle results for current models in our leaderboard (used for results visualization)
+   <!-- - Used to:
      - Build pairwise comparisons during evaluation
      - Calculate relative performance against baseline models
-     - Generate the leaderboard rankings
+     - Generate the leaderboard rankings -->
 
 #### 🗂️ Step 2: Prepare Your Environment
 Create the following directory structure:
@@ -95,11 +97,11 @@ export OPENAI_API_KEY="sk-xxxx"
 2. Run evaluation:
 ```bash
 python caparena_auto_eval.py \
-  --test_model YourModelName \
+  --test_model YourModelName \  % defined by yourself
   --result_path path/to/your_results.json \
   --imgs_dir path/to/images
 ```
-#### 🏅 Step 5: View Results
+#### 🏅 Step 5: View Leaderboard Results
 ```bash
 python caparena_auto_scores.py \
   --caparena_auto_dir data/caparena_auto \
@@ -107,7 +109,7 @@ python caparena_auto_scores.py \
 ```
 > Note: If you would like to submit your results to the [online leaderboard](https://huggingface.co/spaces/yan111222/CapArena_Auto), please raise an issue or contact us!
 
-To view the current leaderboard, download the [results](https://box.nju.edu.cn/f/707c01ccdb724d2f925f/) of the models we have evaluated and put them under `data/caparena_auto`. Then, you can use `python caparena_auto_scores.py` to view the current leaderboard.
+<!-- To view the current leaderboard, download the [results](https://box.nju.edu.cn/f/707c01ccdb724d2f925f/) of the models we have evaluated and put them under `data/caparena_auto`. Then, you can use `python caparena_auto_scores.py` to view the current leaderboard. -->
 
 ```
 Model                          | Score_avg | Score_gpt  | Score_cog  | Score_cpm  | Length_Avg |
@@ -142,7 +144,7 @@ LLaVA-1.5-7B                   | -94.00   | -99.50     | -92.00     | -90.50    
 
 #### 📥 Step 1: Download Annotation Data
 
-Download the [annotation result](https://box.nju.edu.cn/f/0fd0a0d3dce243ab8c12/) of *CapArena* and put them under `data/eval`. 
+Download the [human pair-wise battle annotation](https://box.nju.edu.cn/f/0fd0a0d3dce243ab8c12/) of *CapArena* and put them under `data/eval`. 
 
 ```
 data/
@@ -176,7 +178,6 @@ python vlm_as_a_judge.py --caption_eval_cand_dir data/eval/caparena_annots_eval.
 #### 📊 Calculating Additional Metrics with Human References
 
 If you need human-annotated references for calculating traditional metrics (e.g., BLEU, CIDEr, SPICE), you can obtain the DOCCI human descriptions from:
-
 [docci_descriptions](https://storage.googleapis.com/docci/data/docci_descriptions.jsonlines)
 
 *** 
